@@ -3,12 +3,23 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.mainContro">
+<AnchorPane prefHeight="239.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.mainContro">
    <children>
-      <ComboBox fx:id="comBox" editable="true" layoutX="59.0" layoutY="72.0" prefWidth="150.0" />
-      <Button fx:id="load" layoutX="263.0" layoutY="72.0" mnemonicParsing="false" onAction="#onLoad" text="Button" />
-      <DatePicker fx:id="datepick" layoutX="52.0" layoutY="136.0" />
+      <ComboBox fx:id="item" editable="true" layoutX="271.0" layoutY="59.0" prefHeight="23.0" prefWidth="161.0" promptText="选择耗材" />
+      <Button fx:id="load" layoutX="544.0" layoutY="180.0" mnemonicParsing="false" onAction="#onLoad" prefWidth="100.0" text="保存" />
+      <DatePicker fx:id="datepick" layoutX="60.0" layoutY="59.0" prefHeight="23.0" prefWidth="161.0" promptText="选择时间" />
+      <TextField fx:id="count" layoutX="483.0" layoutY="59.0" promptText="消耗数量" text="0" />
+      <TextField fx:id="_1_2" layoutX="60.0" layoutY="180.0" promptText="一系二段用量" text="0" />
+      <TextField fx:id="_1_1" layoutX="60.0" layoutY="124.0" promptText="一系一段用量" text="0" />
+      <TextField fx:id="_2_1" layoutX="271.0" layoutY="124.0" promptText="二系一段用量" text="0" />
+      <TextField fx:id="_2_2" layoutX="271.0" layoutY="180.0" promptText="二系二段用量" text="0" />
+      <Text layoutX="60.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="一系一段用量" />
+      <Text layoutX="60.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="一系二段用量" />
+      <Text layoutX="271.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="二系一段用量" />
+      <Text layoutX="271.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="二系二段用量" />
    </children>
 </AnchorPane>
