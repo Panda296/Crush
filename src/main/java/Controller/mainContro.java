@@ -1,5 +1,6 @@
 package Controller;
 
+import Listener.AutoCompleteComboBoxListener;
 import Util.LocalDbUtil;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -14,53 +15,74 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
 public class mainContro {
 
-
+    String DB_PATH;
     @FXML
-    private ComboBox item;
+    private ComboBox<String> item;
     @FXML
     private Button load;
     @FXML
     private DatePicker datepick;
 
     @FXML
-    private TextField _1_1, _1_2, _2_1, _2_2,count;
+    private TextField _1_1, _1_2, _2_1, _2_2, count, itemInput;
+    @FXML
+    private TextArea record;
 
-    /**
-     * 初始化ComBox
-     */
-    public void initComBox() {
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                //更新JavaFX的主线程的代码放在此处
-                ObservableList<String> levelItem = LocalDbUtil.of().getLevelItem();
-                item.setItems(levelItem);
-            }
-        });
+    private ObservableList<String> levelItem;
 
-        item.getEditor().textProperty().addListener(new ChangeListener<String>() {
+
+    public void onTextChanged() {
+        itemInput.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.isEmpty()) {
+                if (!newValue.equals(oldValue)) {
                     System.out.println("TextChange Listener");
                     searchLikeNewValue(newValue);
                 }
             }
         });
+    }
 
-        item.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                System.out.println("select Listener");
-//                comBox.setItems(levelItem);
-            }
-        });
+
+    /**
+     * 初始化ComBox
+     */
+    public void initComBox() {
+//        Platform.runLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                //获取所有耗材项目
+//                levelItem = LocalDbUtil.of().getLevelItem();
+//                item.setItems(levelItem);
+//            }
+//        });
+
+//        AutoCompleteComboBoxListener listener = new AutoCompleteComboBoxListener<item>();
+
+//
+//        item.getEditor().textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+//
+//            }
+//        });
+
+//        item.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+//                System.out.println("select Listener");
+////                comBox.setItems(levelItem);
+////                item.setItems(levelItem);
+//                itemInput.setText("");
+//            }
+//        });
     }
 
 
@@ -72,7 +94,7 @@ public class mainContro {
     private ObservableList<String> list;
 
     private void searchLikeNewValue(String newValue) {
-        Connection conn = LocalDbUtil.of().getConn();
+        Connection conn = LocalDbUtil.of().getConn(DB_PATH);
         list = FXCollections.observableArrayList();
         try {
             Statement sql = conn.createStatement();
@@ -83,17 +105,24 @@ public class mainContro {
                 }
             }
             System.out.println("list.toString() = " + list.toString());
-            item.setItems(list);
-            item.show();
             query.close();
             sql.close();
             conn.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("e.getMessage() = " + e.getMessage());
         }
+        item.setItems(list);
+        item.show();
 
+    }
 
+    public void setDB_PATH(String DB_PATH) {
+        this.DB_PATH = DB_PATH;
+    }
+
+    public String getDB_PATH() {
+        return DB_PATH;
     }
 
     @FXML
@@ -103,6 +132,7 @@ public class mainContro {
         String time = format.format(new Date());
         System.out.println("time = " + time);
         String date = datepick.getValue().toString();
+        String selectItem = item.getValue();
         int item_count = Integer.parseInt(count.getText());
         int count_1_1 = Integer.parseInt(_1_1.getText());
         int count_1_2 = Integer.parseInt(_1_2.getText());
@@ -111,9 +141,8 @@ public class mainContro {
 
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        String msg = date+" "+time+" ,消耗: "+item.getEditor().getText()+" "+item_count+" 单位,其中一系一段消耗: "+count_1_1+" 单位,一系二段消耗: "+count_1_2+" 单位" +
-                ",二系一段消耗: "+count_2_1+" 单位 ,二系二段消耗: "+count_2_2+" 单位,请核实数据是否正确,点击确定将保存数据."
-                ;
+        String msg = date + " " + time + " ,消耗: " + selectItem + " " + item_count + " 单位,其中一系一段消耗: " + count_1_1 + " 单位,一系二段消耗: " + count_1_2 + " 单位" +
+                ",二系一段消耗: " + count_2_1 + " 单位 ,二系二段消耗: " + count_2_2 + " 单位,请核实数据是否正确,点击确定将保存数据.";
         alert.setContentText(msg);
         alert.setTitle("数据核实");
         alert.setHeaderText("请确认:");
@@ -123,22 +152,31 @@ public class mainContro {
             System.out.println("点击了确认");
             String insertdate = date + " " + time;
 
-            String sql = "insert into item values(#"+
-                    insertdate+"#,'"+
-                    item.getEditor().getText()+"'," +
-                    count_1_1+","+
-                    count_1_2+","+
-                    count_2_1+","+
-                    count_2_2+","+
-                    item_count+","+
-                    "null,"+"null)"
-                    ;
+            String sql = "insert into item(data,item,count_1_1,count_1_2,count_2_1,count_2_2,totalcount) values(#" +
+                    insertdate + "#,'" +
+                    item.getValue() + "'," +
+                    count_1_1 + "," +
+                    count_1_2 + "," +
+                    count_2_1 + "," +
+                    count_2_2 + "," +
+                    item_count + ")";
 
             System.out.println("sql = " + sql);
+
+            record.appendText(msg + "\r\n");
+
+            LocalDbUtil.of().insert(sql, DB_PATH);
         }
 
 
     }
 
+    /**
+     * riqi
+     */
+    public void initDatePick() {
+        datepick.setValue(LocalDate.now());
+        datepick.setEditable(false);
 
+    }
 }

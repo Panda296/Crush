@@ -3,23 +3,85 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="239.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.mainContro">
+<AnchorPane prefHeight="566.0" prefWidth="793.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.mainContro">
    <children>
-      <ComboBox fx:id="item" editable="true" layoutX="271.0" layoutY="59.0" prefHeight="23.0" prefWidth="161.0" promptText="选择耗材" />
-      <Button fx:id="load" layoutX="544.0" layoutY="180.0" mnemonicParsing="false" onAction="#onLoad" prefWidth="100.0" text="保存" />
-      <DatePicker fx:id="datepick" layoutX="60.0" layoutY="59.0" prefHeight="23.0" prefWidth="161.0" promptText="选择时间" />
-      <TextField fx:id="count" layoutX="483.0" layoutY="59.0" promptText="消耗数量" text="0" />
-      <TextField fx:id="_1_2" layoutX="60.0" layoutY="180.0" promptText="一系二段用量" text="0" />
-      <TextField fx:id="_1_1" layoutX="60.0" layoutY="124.0" promptText="一系一段用量" text="0" />
-      <TextField fx:id="_2_1" layoutX="271.0" layoutY="124.0" promptText="二系一段用量" text="0" />
-      <TextField fx:id="_2_2" layoutX="271.0" layoutY="180.0" promptText="二系二段用量" text="0" />
-      <Text layoutX="60.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="一系一段用量" />
-      <Text layoutX="60.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="一系二段用量" />
-      <Text layoutX="271.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="二系一段用量" />
-      <Text layoutX="271.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="二系二段用量" />
+      <Pane layoutX="17.0" layoutY="98.0" prefHeight="331.0" prefWidth="780.0">
+         <children>
+            <HBox spacing="50.0">
+               <children>
+                  <VBox spacing="15.0">
+                     <children>
+                        <DatePicker fx:id="datepick" promptText="选择时间" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="一系一段用量：↓">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="_1_1" promptText="一系一段用量" text="0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="一系二段用量：↓">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="_1_2" promptText="一系二段用量" text="0" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="15.0">
+                     <children>
+                        <TextField fx:id="itemInput" promptText="输入耗材搜索，右侧选择" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="二系一段用量：↓">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="_2_1" promptText="二系一段用量" text="0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="二系二段用量：↓">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="_2_2" promptText="二系二段用量" text="0" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefWidth="239.0" spacing="15.0">
+                     <children>
+                        <ComboBox fx:id="item" prefWidth="180.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="耗材消耗数量：↓">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="count" promptText="消耗数量" text="0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+                        <Button fx:id="load" mnemonicParsing="false" onAction="#onLoad" prefWidth="120.0" text="保存">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <TextArea fx:id="record" editable="false" layoutY="231.0" prefHeight="200.0" prefWidth="739.0" promptText="记录">
+               <font>
+                  <Font name="Microsoft YaHei Light" size="18.0" />
+               </font>
+            </TextArea>
+         </children>
+      </Pane>
+      <Text layoutX="299.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="耗材消耗录入" textAlignment="CENTER">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

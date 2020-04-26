@@ -1,17 +1,6 @@
 import Controller.mainContro;
-import Util.AliDbUtil;
-import Util.LocalDbUtil;
 import Util.PathUtil;
-import Util.ProUtil;
-import com.aliyuncs.ecs.model.v20140526.DescribeInstancesRequest;
-import com.aliyuncs.ecs.model.v20140526.DescribeInstancesResponse;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,16 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.ResourceBundle;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 public class main_Ali extends Application implements Initializable {
     @FXML
@@ -40,8 +20,6 @@ public class main_Ali extends Application implements Initializable {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-
         URL location = getClass().getResource("Fxml/main.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(location);
@@ -50,20 +28,38 @@ public class main_Ali extends Application implements Initializable {
 
 
 //        Parent root = FXMLLoader.load(getClass().getResource("Fxml/main.fxml"));
-        primaryStage.setTitle("Powerd by Aliyun");
+        primaryStage.setTitle("Powerd by 龙兴集团");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         System.out.println("start");
 
         mainContro mContro = fxmlLoader.getController();
+        initUI(mContro);
+
+        mainContro controller = fxmlLoader.getController();
+        controller.setDB_PATH(PathUtil.of().pickPath());
+        System.out.println("controller.getDB_PATH() = " + controller.getDB_PATH());
+
+//        try {
+//            initPath();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    /**
+     * 初始化界面显示
+     *
+     * @param mContro
+     */
+    private void initUI(mainContro mContro) {
         mContro.initComBox();
-
-        try {
-            initPath();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        mContro.onTextChanged();
+        mContro.initDatePick();
 
     }
 
@@ -77,15 +73,24 @@ public class main_Ali extends Application implements Initializable {
      *
      * @throws Exception
      */
-    private void initPath() throws Exception {
-        String dataPath = ProUtil.of().getDataPath();
-        if (dataPath == null) {
-            String path = PathUtil.of().pickPath();
-            LOGGER.info("PickedPath" + path);
-        } else {
-            String path = PathUtil.of().getDataPath();
-            LOGGER.info("ProPath" + path);
+    private void initPath() {
+        System.out.println("getClass().getResource(\"\") = " + getClass().getResource(""));
+        URL resource = getClass().getResource("cache.json");
+        System.out.println("resource.toString() = " + resource.toString());
+        String localDbPath = PathUtil.of().getLocalDbPath(resource);
+        if (localDbPath == null) {
+            String selectPath = PathUtil.of().pickPath();
+            PathUtil.of().savePathToCache(selectPath);
         }
+
+//        String dataPath = ProUtil.of().getDataPath();
+//        if (dataPath == null) {
+//            String path = PathUtil.of().pickPath();
+//            LOGGER.info("PickedPath" + path);
+//        } else {
+//            String path = PathUtil.of().getDataPath();
+//            LOGGER.info("ProPath" + path);
+//        }
 
 
     }

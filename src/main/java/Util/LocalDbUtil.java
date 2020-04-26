@@ -21,8 +21,8 @@ public class LocalDbUtil {
         return localDbUtil;
     }
 
-    public Connection getConn() {
-        String url = "jdbc:ucanaccess://" + PathUtil.of().getDataPath() + "\\导入测试.accdb";
+    public Connection getConn(String path) {
+        String url = "jdbc:ucanaccess://" + path + "\\导入测试.accdb";
         LOGGER.info("url=" + url);
         String driver = "net.ucanaccess.jdbc.UcanaccessDriver";
         Connection connection = null;
@@ -42,25 +42,45 @@ public class LocalDbUtil {
         return connection;
     }
 
-    public ObservableList<String> getLevelItem() {
-        ObservableList<String> list = FXCollections.observableArrayList();
-        Connection con = getConn();
+//    public ObservableList<String> getLevelItem() throws Exception {
+//        ObservableList<String> list = FXCollections.observableArrayList();
+//        Connection con = getConn();
+//        try {
+//            Statement sql = con.createStatement();
+//            String sqlText = "select 材料名称 from Sheet1";
+//            ResultSet query = sql.executeQuery(sqlText);
+//            while (query.next()) {
+//                for (int i = 1; i < query.getMetaData().getColumnCount() + 1; i++) {
+//                    list.add(query.getString(i));
+//                }
+//            }
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
+//        System.out.println(list.toString());
+//        return list;
+//
+//    }
+
+    /**
+     * 插入数据
+     *
+     * @param sqltext
+     */
+    public void insert(String sqltext,String path) {
+        Connection conn = getConn(path);
         try {
-            Statement sql = con.createStatement();
-            String sqlText = "select 材料名称 from Sheet1";
-            ResultSet query = sql.executeQuery(sqlText);
-            while (query.next()) {
-                for (int i = 1; i < query.getMetaData().getColumnCount() + 1; i++) {
-                    list.add(query.getString(i));
-                }
+            Statement sql = conn.createStatement();
+            int i = sql.executeUpdate(sqltext);
+            if (i > 0) {
+                System.out.println("数据保存成功");
+            } else {
+                System.out.println("数据保存失败");
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        System.out.println(list.toString());
-        return list;
 
     }
-
-
 }

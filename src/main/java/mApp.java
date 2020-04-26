@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class mApp extends Application implements Initializable {
+public class mApp extends Application  {
 
     public static void main(String[] args) {
         launch(args);
@@ -23,10 +23,6 @@ public class mApp extends Application implements Initializable {
 
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-//        initAliyun();
-    }
 
     /**+
      *创建DefaultAcsClient实例并初始化。
@@ -56,4 +52,5 @@ public class mApp extends Application implements Initializable {
             e.printStackTrace();
         }
     }
+
 }
