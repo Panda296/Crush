@@ -54,13 +54,13 @@ public class main_Ali extends Application implements Initializable {
 
     /**
      * 打开数据库时复制一分出来
-     *
+     * 数据库名称在切换选矿厂跟碎矿厂的时候需要更改
      * @param mContro
      */
     private void makeBackUp(mainContro mContro) {
         try {
             FileUtils.copyFile(new File(mContro.getDB_PATH() + "\\选矿厂.accdb"), new File("backup.accdb"));
-            FileUtils.copyFileToDirectory(new File(mContro.getDB_PATH() + "\\选矿厂.accdb"), new File(mContro.getDB_PATH()+"\\backup"));
+            FileUtils.copyFileToDirectory(new File(mContro.getDB_PATH() + "\\选矿厂.accdb"), new File(mContro.getDB_PATH() + "\\backup"));
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("备份文件时出现错误");
