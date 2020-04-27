@@ -30,7 +30,7 @@ public class mainContro {
     private DatePicker datepick;
 
     @FXML
-    private TextField _1_1, _1_2, _2_1, _2_2, count, itemInput;
+    private TextField _1_1, _1_2, _2_1, _2_2, count, itemInput, ironInput, ironOut;
     @FXML
     private TextArea record;
 
@@ -177,6 +177,20 @@ public class mainContro {
     public void initDatePick() {
         datepick.setValue(LocalDate.now());
         datepick.setEditable(false);
+
+    }
+
+    @FXML
+    private void onSaveIron() {
+        LocalDate date = datepick.getValue();
+        String inputIron = ironInput.getText();
+        String OutIron = ironOut.getText();
+        String sql = "insert into iron (data,input,out) values (#"
+                + date + "#,"
+                + inputIron + ","
+                + OutIron+")";
+        System.out.println("sql = " + sql);
+        LocalDbUtil.of().insertIron(sql, DB_PATH);
 
     }
 }

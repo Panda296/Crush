@@ -2,6 +2,7 @@ package Util;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 
 import java.sql.*;
 
@@ -22,7 +23,7 @@ public class LocalDbUtil {
     }
 
     public Connection getConn(String path) {
-        String url = "jdbc:ucanaccess://" + path + "\\选矿厂.accdb";
+        String url = "jdbc:ucanaccess://" + path + "\\碎矿厂.accdb";
         LOGGER.info("url=" + url);
         String driver = "net.ucanaccess.jdbc.UcanaccessDriver";
         Connection connection = null;
@@ -67,14 +68,16 @@ public class LocalDbUtil {
      *
      * @param sqltext
      */
-    public void insert(String sqltext,String path) {
+    public void insert(String sqltext, String path) {
         Connection conn = getConn(path);
         try {
             Statement sql = conn.createStatement();
             int i = sql.executeUpdate(sqltext);
             if (i > 0) {
+                showAlert("数据保存成功");
                 System.out.println("数据保存成功");
             } else {
+                showAlert("数据保存失败");
                 System.out.println("数据保存失败");
             }
 
@@ -82,5 +85,35 @@ public class LocalDbUtil {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * 存储金矿石跟产出量
+     *
+     * @param sqltext
+     * @param db_path
+     */
+    public void insertIron(String sqltext, String db_path) {
+        Connection conn = getConn(db_path);
+        try {
+            Statement sql = conn.createStatement();
+            int i = sql.executeUpdate(sqltext);
+            if (i > 0) {
+                showAlert("数据保存成功");
+                System.out.println("数据保存成功");
+            } else {
+                showAlert("数据保存失败");
+                System.out.println("数据保存失败");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+    private void showAlert(String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(msg);
+        alert.show();
     }
 }

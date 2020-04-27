@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="566.0" prefWidth="793.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SecondController">
+<AnchorPane prefHeight="636.0" prefWidth="675.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SecondController">
     <children>
         <Pane layoutX="17.0" layoutY="98.0" prefHeight="331.0" prefWidth="780.0">
             <children>
@@ -71,11 +72,42 @@
                         </VBox>
                     </children>
                 </HBox>
-                <TextArea fx:id="record" editable="false" layoutY="231.0" prefHeight="200.0" prefWidth="739.0" promptText="记录">
-                    <font>
-                        <Font name="Microsoft YaHei Light" size="18.0" />
-                    </font>
-                </TextArea>
+            <Pane layoutX="-2.0" layoutY="196.0" prefHeight="1.0" prefWidth="600.0" style="-fx-background-color: #000000;" />
+            <HBox alignment="BOTTOM_LEFT" layoutY="207.0" spacing="50.0">
+               <children>
+                  <VBox spacing="15.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="原矿石进量:↓">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="ironInput" prefWidth="185.0" />
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox spacing="15.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="产品产出量:↓">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="ironOut" />
+                     </children>
+                  </VBox>
+                  <Button fx:id="onSaveIron" mnemonicParsing="false" onAction="#onSaveIron" prefWidth="120.0" text="保存">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
             </children>
         </Pane>
         <Text layoutX="299.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="耗材消耗录入" textAlignment="CENTER">
@@ -83,5 +115,10 @@
                 <Font size="36.0" />
             </font>
         </Text>
+          <TextArea fx:id="record" editable="false" layoutX="17.0" layoutY="405.0" prefHeight="200.0" prefWidth="739.0" promptText="记录">
+              <font>
+                  <Font name="Microsoft YaHei Light" size="18.0" />
+              </font>
+          </TextArea>
     </children>
 </AnchorPane>

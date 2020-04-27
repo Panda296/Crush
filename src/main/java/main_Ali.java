@@ -20,12 +20,12 @@ import java.util.ResourceBundle;
 public class main_Ali extends Application implements Initializable {
     @FXML
     private ComboBox comBox;
-    private mainContro mContro;
+    private SecondController mContro;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        URL location = getClass().getResource("Fxml/main.fxml");
+        URL location = getClass().getResource("Fxml/second.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(location);
         fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
@@ -38,7 +38,7 @@ public class main_Ali extends Application implements Initializable {
         primaryStage.show();
         System.out.println("start");
 
-        mainContro mContro = fxmlLoader.getController();
+        SecondController mContro = fxmlLoader.getController();
         initUI(mContro);
 
         mContro.setDB_PATH(PathUtil.of().pickPath());
@@ -57,10 +57,10 @@ public class main_Ali extends Application implements Initializable {
      * 数据库名称在切换选矿厂跟碎矿厂的时候需要更改
      * @param mContro
      */
-    private void makeBackUp(mainContro mContro) {
+    private void makeBackUp(SecondController mContro) {
         try {
-            FileUtils.copyFile(new File(mContro.getDB_PATH() + "\\选矿厂.accdb"), new File("backup.accdb"));
-            FileUtils.copyFileToDirectory(new File(mContro.getDB_PATH() + "\\选矿厂.accdb"), new File(mContro.getDB_PATH() + "\\backup"));
+            FileUtils.copyFile(new File(mContro.getDB_PATH() + "\\碎矿厂.accdb"), new File("backup.accdb"));
+            FileUtils.copyFileToDirectory(new File(mContro.getDB_PATH() + "\\碎矿厂.accdb"), new File(mContro.getDB_PATH() + "\\backup"));
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("备份文件时出现错误");
@@ -77,7 +77,7 @@ public class main_Ali extends Application implements Initializable {
      *
      * @param mContro
      */
-    private void initUI(mainContro mContro) {
+    private void initUI(SecondController mContro) {
         mContro.initComBox();
         mContro.onTextChanged();
         mContro.initDatePick();
