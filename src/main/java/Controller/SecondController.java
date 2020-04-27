@@ -1,3 +1,4 @@
+
 package Controller;
 
 import Listener.AutoCompleteComboBoxListener;
@@ -19,7 +20,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
-public class mainContro {
+public class SecondController {
 
     String DB_PATH;
     @FXML
@@ -180,3 +181,5 @@ public class mainContro {
 
     }
 }
+
+

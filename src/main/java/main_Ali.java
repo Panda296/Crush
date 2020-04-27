@@ -1,3 +1,4 @@
+import Controller.SecondController;
 import Controller.mainContro;
 import Util.PathUtil;
 import javafx.application.Application;
@@ -9,13 +10,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class main_Ali extends Application implements Initializable {
     @FXML
     private ComboBox comBox;
+    private mainContro mContro;
 
 
     @Override
@@ -36,15 +41,31 @@ public class main_Ali extends Application implements Initializable {
         mainContro mContro = fxmlLoader.getController();
         initUI(mContro);
 
-        mainContro controller = fxmlLoader.getController();
-        controller.setDB_PATH(PathUtil.of().pickPath());
-        System.out.println("controller.getDB_PATH() = " + controller.getDB_PATH());
+        mContro.setDB_PATH(PathUtil.of().pickPath());
+        System.out.println("controller.getDB_PATH() = " + mContro.getDB_PATH());
+        makeBackUp(mContro);
 
 //        try {
 //            initPath();
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+    }
+
+    /**
+     * 打开数据库时复制一分出来
+     *
+     * @param mContro
+     */
+    private void makeBackUp(mainContro mContro) {
+        try {
+            FileUtils.copyFile(new File(mContro.getDB_PATH() + "\\选矿厂.accdb"), new File("backup.accdb"));
+            FileUtils.copyFileToDirectory(new File(mContro.getDB_PATH() + "\\选矿厂.accdb"), new File(mContro.getDB_PATH()+"\\backup"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("备份文件时出现错误");
+
+        }
     }
 
     public static void main(String[] args) {

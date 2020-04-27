@@ -76,7 +76,7 @@
         </resources>
 
         <plugins>
-
+            <!--打包插件  控制台运行  mvn jfx:native -->
             <plugin>
                 <groupId>com.zenjava</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>

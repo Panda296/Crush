@@ -22,7 +22,7 @@ public class LocalDbUtil {
     }
 
     public Connection getConn(String path) {
-        String url = "jdbc:ucanaccess://" + path + "\\导入测试.accdb";
+        String url = "jdbc:ucanaccess://" + path + "\\选矿厂.accdb";
         LOGGER.info("url=" + url);
         String driver = "net.ucanaccess.jdbc.UcanaccessDriver";
         Connection connection = null;
