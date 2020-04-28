@@ -1,8 +1,7 @@
 package Controller;
 
-import Listener.AutoCompleteComboBoxListener;
+import Util.AlertUtil;
 import Util.LocalDbUtil;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -183,12 +182,21 @@ public class mainContro {
     @FXML
     private void onSaveIron() {
         LocalDate date = datepick.getValue();
-        String inputIron = ironInput.getText();
-        String OutIron = ironOut.getText();
+
+        double OutIron = 0;
+        double inputIron = 0;
+        try {
+            OutIron = Double.parseDouble(ironOut.getText());
+            inputIron = Double.parseDouble(ironInput.getText());
+        } catch (NumberFormatException e) {
+            AlertUtil.of().showAlert(e.getMessage());
+            e.printStackTrace();
+            return;
+        }
         String sql = "insert into iron (data,input,out) values (#"
                 + date + "#,"
                 + inputIron + ","
-                + OutIron+")";
+                + OutIron + ")";
         System.out.println("sql = " + sql);
         LocalDbUtil.of().insertIron(sql, DB_PATH);
 
