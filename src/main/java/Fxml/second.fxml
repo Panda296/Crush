@@ -22,11 +22,15 @@
                         <VBox spacing="15.0">
                             <children>
                                 <DatePicker fx:id="datepick" promptText="选择时间" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="粗碎：↓">
-                                    <font>
-                                        <Font size="14.0" />
-                                    </font>
-                                </Text>
+                        <HBox>
+                           <children>
+                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="粗碎：↓">
+                                          <font>
+                                              <Font size="14.0" />
+                                          </font>
+                                      </Text>
+                           </children>
+                        </HBox>
                                 <TextField fx:id="_1_1" promptText="一系一段用量" text="0" />
                                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="中碎：↓">
                                     <font>
@@ -45,12 +49,12 @@
                                     </font>
                                 </Text>
                                 <TextField fx:id="_2_1" promptText="二系一段用量" text="0" />
-                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="二系二段用量：↓" visible="false">
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="筛分：↓">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Text>
-                                <TextField fx:id="_2_2" promptText="二系二段用量" text="0" visible="false" />
+                                <TextField fx:id="_2_2" promptText="二系二段用量" text="0" />
                             </children>
                         </VBox>
                         <VBox alignment="CENTER_LEFT" prefWidth="239.0" spacing="15.0">

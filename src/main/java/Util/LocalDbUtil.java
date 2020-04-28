@@ -1,10 +1,11 @@
 package Util;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
@@ -45,7 +46,7 @@ public class LocalDbUtil {
 
 //    public ObservableList<String> getLevelItem() throws Exception {
 //        ObservableList<String> list = FXCollections.observableArrayList();
-//        Connection con = getConn();
+//        Connection con = getConn("");
 //        try {
 //            Statement sql = con.createStatement();
 //            String sqlText = "select 材料名称 from Sheet1";
@@ -55,6 +56,7 @@ public class LocalDbUtil {
 //                    list.add(query.getString(i));
 //                }
 //            }
+//
 //        } catch (SQLException throwables) {
 //            throwables.printStackTrace();
 //        }
@@ -68,6 +70,9 @@ public class LocalDbUtil {
      *
      * @param sqltext
      */
+
+
+
     public void insert(String sqltext, String path) {
         Connection conn = getConn(path);
         try {

@@ -1,9 +1,8 @@
 
 package Controller;
 
-import Listener.AutoCompleteComboBoxListener;
+import Util.AlertUtil;
 import Util.LocalDbUtil;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -134,16 +133,33 @@ public class SecondController {
         System.out.println("time = " + time);
         String date = datepick.getValue().toString();
         String selectItem = item.getValue();
-        int item_count = Integer.parseInt(count.getText());
-        int count_1_1 = Integer.parseInt(_1_1.getText());
-        int count_1_2 = Integer.parseInt(_1_2.getText());
-        int count_2_1 = Integer.parseInt(_2_1.getText());
-        int count_2_2 = Integer.parseInt(_2_2.getText());
+        /*耗材选定判断*/
+        if (selectItem == null) {
+            AlertUtil.of().showAlert("请选定耗材");
+            return;
+        }
+        int item_count = 0;
+        int count_1_1 = 0;
+        int count_1_2 = 0;
+        int count_2_1 = 0;
+        int count_2_2 = 0;
+        /*数量格式判断*/
+        try {
+            item_count = Integer.parseInt(count.getText());
+            count_1_1 = Integer.parseInt(_1_1.getText());
+            count_1_2 = Integer.parseInt(_1_2.getText());
+            count_2_1 = Integer.parseInt(_2_1.getText());
+            count_2_2 = Integer.parseInt(_2_2.getText());
+        } catch (NumberFormatException e) {
+//            showAlert("数据格式错误");
+            AlertUtil.of().showAlert("数据格式错误");
+            return;
+        }
 
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        String msg = date + " " + time + " ,消耗: " + selectItem + " " + item_count + " 单位,其中一系一段消耗: " + count_1_1 + " 单位,一系二段消耗: " + count_1_2 + " 单位" +
-                ",二系一段消耗: " + count_2_1 + " 单位 ,二系二段消耗: " + count_2_2 + " 单位,请核实数据是否正确,点击确定将保存数据.";
+        String msg = date + " " + time + "\t\n消耗: " + selectItem + " >>> " + item_count + " 单位,\t\n其中粗碎消耗: >>> " + count_1_1 + "单位,\t\n中碎消耗: >>> " + count_1_2 + " 单位" +
+                ",\t\n细碎消耗: >>> " + count_2_1 + " 单位 ,\t\n筛分消耗: >>> " + count_2_2 + " 单位,\t\n请核实数据是否正确,点击确定将保存数据.";
         alert.setContentText(msg);
         alert.setTitle("数据核实");
         alert.setHeaderText("请确认:");
@@ -173,6 +189,17 @@ public class SecondController {
     }
 
     /**
+     * Alert提示
+     *
+     * @param msg 信息内容
+     */
+    private void showAlert(String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(msg);
+        alert.show();
+    }
+
+    /**
      * riqi
      */
     public void initDatePick() {
@@ -190,7 +217,7 @@ public class SecondController {
         String sql = "insert into iron (data,input,out) values (#"
                 + date + "#,"
                 + inputIron + ","
-                + OutIron+")";
+                + OutIron + ")";
         System.out.println("sql = " + sql);
         LocalDbUtil.of().insertIron(sql, DB_PATH);
 
