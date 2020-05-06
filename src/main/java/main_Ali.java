@@ -1,5 +1,5 @@
 import Controller.SecondController;
-import Controller.mainContro;
+import Util.CacheUtil;
 import Util.PathUtil;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -30,19 +30,18 @@ public class main_Ali extends Application implements Initializable {
         fxmlLoader.setLocation(location);
         fxmlLoader.setBuilderFactory(new JavaFXBuilderFactory());
         Parent root = fxmlLoader.load();
-
-
-//        Parent root = FXMLLoader.load(getClass().getResource("Fxml/main.fxml"));
         primaryStage.setTitle("Powerd by 龙兴集团");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
         System.out.println("start");
 
-        SecondController mContro = fxmlLoader.getController();
+        mContro = fxmlLoader.getController();
+//        mContro.initUI();
         initUI(mContro);
 
-        mContro.setDB_PATH(PathUtil.of().pickPath());
-        System.out.println("controller.getDB_PATH() = " + mContro.getDB_PATH());
+
+        String dbPath = CacheUtil.of().getDbPath();
+
         makeBackUp(mContro);
 
 //        try {
@@ -52,15 +51,22 @@ public class main_Ali extends Application implements Initializable {
 //        }
     }
 
+
     /**
      * 打开数据库时复制一分出来
      * 数据库名称在切换选矿厂跟碎矿厂的时候需要更改
+     *
      * @param mContro
      */
     private void makeBackUp(SecondController mContro) {
         try {
-            FileUtils.copyFile(new File(mContro.getDB_PATH() + "\\碎矿厂.accdb"), new File("backup.accdb"));
-            FileUtils.copyFileToDirectory(new File(mContro.getDB_PATH() + "\\碎矿厂.accdb"), new File(mContro.getDB_PATH() + "\\backup"));
+            FileUtils.copyFile(new File(CacheUtil.of().getDbPath()), new File("backup.accdb"));
+            File sourceFile = new File(CacheUtil.of().getDbPath());
+            System.out.println("sourceFile = " + sourceFile);
+            File targetFile = new File(CacheUtil.of().getDbPath().replace("碎矿厂.accdb", "") + "\\backup");
+            System.out.println("targetFile = " + targetFile);
+            FileUtils.copyFileToDirectory(sourceFile, targetFile);
+
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("备份文件时出现错误");
@@ -78,9 +84,9 @@ public class main_Ali extends Application implements Initializable {
      * @param mContro
      */
     private void initUI(SecondController mContro) {
-        mContro.initComBox();
         mContro.onTextChanged();
         mContro.initDatePick();
+        mContro.initDbData();
 
     }
 
