@@ -14,7 +14,7 @@ public class ConsumeBean {
     private SimpleDoubleProperty count_2_2 = new SimpleDoubleProperty();
     private SimpleDoubleProperty totalCount = new SimpleDoubleProperty();
     private SimpleDoubleProperty selectCount = new SimpleDoubleProperty();
-    private SimpleDoubleProperty bellCount = new SimpleDoubleProperty();
+    private SimpleDoubleProperty beltCount = new SimpleDoubleProperty();
 
     public int getId() {
         return id.get();
@@ -40,7 +40,7 @@ public class ConsumeBean {
                 ", count_2_2=" + count_2_2 +
                 ", totalCount=" + totalCount +
                 ", selectCount=" + selectCount +
-                ", bellCount=" + bellCount +
+                ", bellCount=" + beltCount +
                 '}';
     }
 
@@ -140,15 +140,15 @@ public class ConsumeBean {
         this.selectCount.set(selectCount);
     }
 
-    public double getBellCount() {
-        return bellCount.get();
+    public double getBeltCount() {
+        return beltCount.get();
     }
 
-    public SimpleDoubleProperty bellCountProperty() {
-        return bellCount;
+    public SimpleDoubleProperty beltCountProperty() {
+        return beltCount;
     }
 
-    public void setBellCount(double bellCount) {
-        this.bellCount.set(bellCount);
+    public void setBeltCount(double beltCount) {
+        this.beltCount.set(beltCount);
     }
 }

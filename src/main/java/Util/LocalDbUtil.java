@@ -8,7 +8,6 @@ import javafx.scene.control.Alert;
 
 import java.sql.*;
 
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 public class LocalDbUtil {
 
@@ -26,7 +25,6 @@ public class LocalDbUtil {
 
     public Connection getConn() {
         String url = "jdbc:ucanaccess://" + CacheUtil.of().getDbPath();
-        LOGGER.info("url=" + url);
         String driver = "net.ucanaccess.jdbc.UcanaccessDriver";
         Connection connection = null;
         try {
@@ -35,11 +33,9 @@ public class LocalDbUtil {
                 connection = DriverManager.getConnection(url);
             } catch (SQLException e) {
                 e.printStackTrace();
-                LOGGER.info("数据库链接失败" + e.getMessage());
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            LOGGER.info("数据库驱动加载失败" + e.getMessage());
         }
 
         return connection;
@@ -145,7 +141,7 @@ public class LocalDbUtil {
                 bean.setCount_2_2(query.getDouble("count_2_2"));
                 bean.setTotalCount(query.getDouble("totalcount"));
                 bean.setSelectCount(query.getDouble("seleccount"));
-                bean.setBellCount(query.getDouble("beltcount"));
+                bean.setBeltCount(query.getDouble("beltcount"));
                 list.add(bean);
             }
 

@@ -29,34 +29,54 @@ import java.util.Optional;
 
 public class SecondController {
 
-    String DB_PATH;
     @FXML
     private ComboBox<String> item;
-    @FXML
-    private Button load;
+
     @FXML
     private DatePicker datepick;
 
     @FXML
     private TextField _1_1, _1_2, _2_1, _2_2, count, itemInput, ironInput, ironOut, belt, dryselect;
-    @FXML
-    private TextArea record;
+
     @FXML
     private Text itemdetail;
     @FXML
-    private TableColumn date;
+    private TableColumn<Object, Object> date;
 
     @FXML
-    private TableColumn col_item;
+    private TableColumn<Object, Object> col_item;
 
     @FXML
-    private TableColumn count_1, count_2, count_3, count_4, count_5, count_6, count_7, col_id, iron_in, iron_out, iron_date, iron_id;
+    private TableColumn<Object, Object> count_1;
+    @FXML
+    private TableColumn<Object, Object> count_2;
+    @FXML
+    private TableColumn<Object, Object> count_3;
+    @FXML
+    private TableColumn<Object, Object> count_4;
+    @FXML
+    private TableColumn<Object, Object> count_5;
+    @FXML
+    private TableColumn<Object, Object> count_6;
+    @FXML
+    private TableColumn<Object, Object> count_7;
+    @FXML
+    private TableColumn<Object, Object> col_id;
+    @FXML
+    private TableColumn<Object, Object> iron_in;
+    @FXML
+    private TableColumn<Object, Object> iron_out;
+    @FXML
+    private TableColumn<Object, Object> iron_date;
+    @FXML
+    private TableColumn<Object, Object> iron_id;
 
 
     @FXML
-    private TableView tableView, iron_table;
+    private TableView<ConsumeBean> tableView;
+    @FXML
+    private TableView<IronBean> iron_table;
 
-    private ObservableList<String> levelItem;
 
 
     public void onTextChanged() {
@@ -86,17 +106,11 @@ public class SecondController {
     }
 
 
-    /**
-     * 根据combox中的文字查询数据库
-     *
-     * @param newValue
-     */
-    private ObservableList<String> list;
     private JSONObject ListsDetail;
 
     private void searchLikeNewValue(String newValue) {
         Connection conn = LocalDbUtil.of().getConn();
-        list = FXCollections.observableArrayList();
+        ObservableList<String> list = FXCollections.observableArrayList();
         ListsDetail = new JSONObject();
         try {
             Statement sql = conn.createStatement();
@@ -135,13 +149,13 @@ public class SecondController {
             AlertUtil.of().showAlert("请选定耗材");
             return;
         }
-        double item_count = 0;
-        double count_1_1 = 0;
-        double count_1_2 = 0;
-        double count_2_1 = 0;
-        double count_2_2 = 0;
-        double selectcount = 0;
-        double beltcount = 0;
+        double item_count;
+        double count_1_1;
+        double count_1_2;
+        double count_2_1;
+        double count_2_2;
+        double selectcount;
+        double beltcount;
 
         /*数量格式判断*/
         try {
@@ -152,8 +166,10 @@ public class SecondController {
             count_2_2 = Double.parseDouble(_2_2.getText());
             selectcount = Double.parseDouble(dryselect.getText());
             beltcount = Double.parseDouble(belt.getText());
+            if (item_count == 0) {
+                item_count = count_1_1 + count_1_2 + count_2_1 + count_2_2 + selectcount + beltcount;
+            }
         } catch (NumberFormatException e) {
-//            showAlert("数据格式错误");
             AlertUtil.of().showAlert("数据格式错误");
             return;
         }
@@ -201,16 +217,6 @@ public class SecondController {
 
     }
 
-    /**
-     * Alert提示
-     *
-     * @param msg 信息内容
-     */
-    private void showAlert(String msg) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setContentText(msg);
-        alert.show();
-    }
 
     /**
      * riqi
@@ -225,8 +231,8 @@ public class SecondController {
     @FXML
     private void onSaveIron() {
         LocalDate date = datepick.getValue();
-        double OutIron = 0;
-        double inputIron = 0;
+        double OutIron;
+        double inputIron;
         try {
             OutIron = Double.parseDouble(ironOut.getText());
             inputIron = Double.parseDouble(ironInput.getText());
@@ -242,7 +248,6 @@ public class SecondController {
         } catch (NumberFormatException e) {
             AlertUtil.of().showAlert(e.getMessage());
             e.printStackTrace();
-            return;
         }
 
 
@@ -283,9 +288,9 @@ public class SecondController {
         count_2.setCellValueFactory(new PropertyValueFactory<>("count_1_2"));
         count_3.setCellValueFactory(new PropertyValueFactory<>("count_2_1"));
         count_4.setCellValueFactory(new PropertyValueFactory<>("count_2_2"));
-        count_5.setCellValueFactory(new PropertyValueFactory<>("totalCount"));
-        count_6.setCellValueFactory(new PropertyValueFactory<>("selectCount"));
-        count_7.setCellValueFactory(new PropertyValueFactory<>("bellCount"));
+        count_5.setCellValueFactory(new PropertyValueFactory<>("selectCount"));
+        count_6.setCellValueFactory(new PropertyValueFactory<>("beltCount"));
+        count_7.setCellValueFactory(new PropertyValueFactory<>("totalCount"));
 
         ObservableList<IronBean> ironDb = LocalDbUtil.of().refreshIronData();
         Collections.reverse(ironDb);
@@ -304,7 +309,7 @@ public class SecondController {
     private void delete_consume() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("删除确认");
-        ConsumeBean consumeBean = (ConsumeBean) tableView.getSelectionModel().getSelectedItem();
+        ConsumeBean consumeBean = tableView.getSelectionModel().getSelectedItem();
         System.out.println("consumeBean = " + consumeBean);
         int id = consumeBean.getId();
         alert.setContentText("是否删除第" + id + "条数据?");
@@ -326,7 +331,7 @@ public class SecondController {
     private void delete_iron() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("删除确认");
-        IronBean ironBean = (IronBean) iron_table.getSelectionModel().getSelectedItem();
+        IronBean ironBean = iron_table.getSelectionModel().getSelectedItem();
         int id = ironBean.getId();
         alert.setContentText("是否删除第" + id + "条数据?");
         Optional<ButtonType> type = alert.showAndWait();
