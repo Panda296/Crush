@@ -40,7 +40,7 @@ public class SecondController {
     private Text itemdetail;
     @FXML
     private TableColumn<Object, Object> date, col_item, count_1, count_2, count_3, count_4, count_5, count_6, count_7, col_id, iron_in, iron_out, iron_date, iron_id,
-                                        id_s,data_s,item_s,count_1_s,count_2_s,count_3_s,count_4_s,count_5_s,count_6_s,total_s;
+            id_s, data_s, item_s, count_1_s, count_2_s, count_3_s, count_4_s, count_5_s, count_6_s, total_s;
     @FXML
     private TableView<ConsumeBean> tableView, tv_s;
     @FXML
@@ -105,7 +105,9 @@ public class SecondController {
 
     }
 
-
+    /**
+     * 存储消耗数据
+     */
     @FXML
     private void onLoad() {
         System.out.println(datepick.getValue().toString());
@@ -144,6 +146,12 @@ public class SecondController {
             return;
         }
 
+        if (count_1_1 == 0 && count_1_2 == 0 && count_2_1 == 0 && count_2_2 == 0 && selectcount == 0 && beltcount == 0) {
+            if (item_count == 0) {
+                AlertUtil.of().showAlert("所有数据均为 0 ,请检查输入数据");
+                return;
+            }
+        }
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         String msg = date + " " + time + "\t\n" +
@@ -291,7 +299,6 @@ public class SecondController {
         count_5_s.setCellValueFactory(new PropertyValueFactory<>("selectCount"));
         count_6_s.setCellValueFactory(new PropertyValueFactory<>("beltCount"));
         total_s.setCellValueFactory(new PropertyValueFactory<>("totalCount"));
-
 
 
     }
