@@ -1,6 +1,7 @@
 package Util;
 
 import Bean.ConsumeBean;
+import Bean.DbTag;
 import Bean.IronBean;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -61,7 +62,7 @@ public class LocalDbUtil {
             }
             sql.close();
             conn.close();
-            refreshDbData();
+            refreshDbData(DbTag.DB_CONSUME);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -123,13 +124,14 @@ public class LocalDbUtil {
      * 获取消耗实时记录
      *
      * @return
+     * @param
      */
-    public ObservableList<ConsumeBean> refreshDbData() {
+    public ObservableList<ConsumeBean> refreshDbData(String dbTag) {
         Connection conn = getConn();
         ObservableList<ConsumeBean> list = FXCollections.observableArrayList();
         try {
             Statement sql = conn.createStatement();
-            ResultSet query = sql.executeQuery("select * from consume_data");
+            ResultSet query = sql.executeQuery("select * from "+dbTag);
             while (query.next()) {
                 ConsumeBean bean = new ConsumeBean();
                 bean.setId(query.getInt("id"));
@@ -216,5 +218,28 @@ public class LocalDbUtil {
             showAlert("删除失败");
         }
         return i;
+    }
+
+    /**
+     * 删除技改等项目消耗
+     *
+     * @param id
+     * @return
+     */
+    public int deleteSpecial(int id) {
+        int i = 0;
+        Connection conn = getConn();
+        try {
+            Statement sql = conn.createStatement();
+            i = sql.executeUpdate("delete from special_consume where id=" + id);
+            if (i > 0) {
+                showAlert("删除成功");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            showAlert("删除失败");
+        }
+        return i;
+
     }
 }

@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Crush" />
+        <module name="AliyunDemo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8" />

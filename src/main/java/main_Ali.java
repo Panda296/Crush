@@ -1,6 +1,5 @@
 import Controller.SecondController;
 import Util.CacheUtil;
-import Util.PathUtil;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -95,30 +94,7 @@ public class main_Ali extends Application implements Initializable {
         System.out.println("initialize");
     }
 
-    /**
-     * 设置数据库路径
-     *
-     * @throws Exception
-     */
-    private void initPath() {
-        System.out.println("getClass().getResource(\"\") = " + getClass().getResource(""));
-        URL resource = getClass().getResource("cache.json");
-        System.out.println("resource.toString() = " + resource.toString());
-        String localDbPath = PathUtil.of().getLocalDbPath(resource);
-        if (localDbPath == null) {
-            String selectPath = PathUtil.of().pickPath();
-            PathUtil.of().savePathToCache(selectPath);
-        }
-
-//        String dataPath = ProUtil.of().getDataPath();
-//        if (dataPath == null) {
-//            String path = PathUtil.of().pickPath();
-//            LOGGER.info("PickedPath" + path);
-//        } else {
-//            String path = PathUtil.of().getDataPath();
-//            LOGGER.info("ProPath" + path);
-//        }
 
 
-    }
+
 }

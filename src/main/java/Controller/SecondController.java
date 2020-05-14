@@ -2,6 +2,7 @@
 package Controller;
 
 import Bean.ConsumeBean;
+import Bean.DbTag;
 import Bean.IronBean;
 import Util.AlertUtil;
 import Util.CacheUtil;
@@ -31,52 +32,21 @@ public class SecondController {
 
     @FXML
     private ComboBox<String> item;
-
     @FXML
     private DatePicker datepick;
-
     @FXML
     private TextField _1_1, _1_2, _2_1, _2_2, count, itemInput, ironInput, ironOut, belt, dryselect;
-
     @FXML
     private Text itemdetail;
     @FXML
-    private TableColumn<Object, Object> date;
-
+    private TableColumn<Object, Object> date, col_item, count_1, count_2, count_3, count_4, count_5, count_6, count_7, col_id, iron_in, iron_out, iron_date, iron_id,
+                                        id_s,data_s,item_s,count_1_s,count_2_s,count_3_s,count_4_s,count_5_s,count_6_s,total_s;
     @FXML
-    private TableColumn<Object, Object> col_item;
-
-    @FXML
-    private TableColumn<Object, Object> count_1;
-    @FXML
-    private TableColumn<Object, Object> count_2;
-    @FXML
-    private TableColumn<Object, Object> count_3;
-    @FXML
-    private TableColumn<Object, Object> count_4;
-    @FXML
-    private TableColumn<Object, Object> count_5;
-    @FXML
-    private TableColumn<Object, Object> count_6;
-    @FXML
-    private TableColumn<Object, Object> count_7;
-    @FXML
-    private TableColumn<Object, Object> col_id;
-    @FXML
-    private TableColumn<Object, Object> iron_in;
-    @FXML
-    private TableColumn<Object, Object> iron_out;
-    @FXML
-    private TableColumn<Object, Object> iron_date;
-    @FXML
-    private TableColumn<Object, Object> iron_id;
-
-
-    @FXML
-    private TableView<ConsumeBean> tableView;
+    private TableView<ConsumeBean> tableView, tv_s;
     @FXML
     private TableView<IronBean> iron_table;
-
+    @FXML
+    private CheckBox isSpecial;
 
 
     public void onTextChanged() {
@@ -190,10 +160,16 @@ public class SecondController {
         alert.setHeaderText("请确认:");
         alert.initOwner(null);
         Optional<ButtonType> wait = alert.showAndWait();
+
+        String consume_data = "consume_data";
+        if (isSpecial.isSelected()) {
+            consume_data = "special_consume";
+        }
+
         if (wait.get().getButtonData().isDefaultButton()) {
             System.out.println("点击了确认");
             String insertdate = date + " " + time;
-            String sql = "insert into consume_data (data,item,count_1_1,count_1_2,count_2_1,count_2_2,totalcount,seleccount,beltcount) values(#" +
+            String sql = "insert into " + consume_data + " (data,item,count_1_1,count_1_2,count_2_1,count_2_2,totalcount,seleccount,beltcount) values(#" +
                     insertdate + "#,'" +
                     item.getValue() + "'," +
                     count_1_1 + "," +
@@ -210,6 +186,7 @@ public class SecondController {
             int insert = LocalDbUtil.of().insert(sql);
             if (insert > 0) {
                 initDbData();
+                cleanInput();
             }
             cleanInput();
         }
@@ -244,6 +221,7 @@ public class SecondController {
             int i = LocalDbUtil.of().insertIron(sql);
             if (i > 0) {
                 initDbData();
+                cleanInput();
             }
         } catch (NumberFormatException e) {
             AlertUtil.of().showAlert(e.getMessage());
@@ -277,9 +255,8 @@ public class SecondController {
      * 展示数据库中数据
      */
     public void initDbData() {
-        ObservableList<ConsumeBean> dbData = LocalDbUtil.of().refreshDbData();
+        ObservableList<ConsumeBean> dbData = LocalDbUtil.of().refreshDbData(DbTag.DB_CONSUME);
         Collections.reverse(dbData);
-        System.out.println("dbData = " + dbData);
         tableView.setItems(dbData);
         col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         date.setCellValueFactory(new PropertyValueFactory<>("date"));
@@ -300,6 +277,23 @@ public class SecondController {
         iron_in.setCellValueFactory(new PropertyValueFactory<>("ironInput"));
         iron_out.setCellValueFactory(new PropertyValueFactory<>("ironOut"));
 
+
+        ObservableList<ConsumeBean> spData = LocalDbUtil.of().refreshDbData(DbTag.DB_SPECIAL);
+        Collections.reverse(spData);
+        tv_s.setItems(spData);
+        id_s.setCellValueFactory(new PropertyValueFactory<>("id"));
+        data_s.setCellValueFactory(new PropertyValueFactory<>("date"));
+        item_s.setCellValueFactory(new PropertyValueFactory<>("item"));
+        count_1_s.setCellValueFactory(new PropertyValueFactory<>("count_1_1"));
+        count_2_s.setCellValueFactory(new PropertyValueFactory<>("count_1_2"));
+        count_3_s.setCellValueFactory(new PropertyValueFactory<>("count_2_1"));
+        count_4_s.setCellValueFactory(new PropertyValueFactory<>("count_2_2"));
+        count_5_s.setCellValueFactory(new PropertyValueFactory<>("selectCount"));
+        count_6_s.setCellValueFactory(new PropertyValueFactory<>("beltCount"));
+        total_s.setCellValueFactory(new PropertyValueFactory<>("totalCount"));
+
+
+
     }
 
     /**
@@ -310,6 +304,9 @@ public class SecondController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("删除确认");
         ConsumeBean consumeBean = tableView.getSelectionModel().getSelectedItem();
+        if (consumeBean == null) {
+            return;
+        }
         System.out.println("consumeBean = " + consumeBean);
         int id = consumeBean.getId();
         alert.setContentText("是否删除第" + id + "条数据?");
@@ -332,11 +329,36 @@ public class SecondController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("删除确认");
         IronBean ironBean = iron_table.getSelectionModel().getSelectedItem();
+        if (ironBean == null) {
+            return;
+        }
         int id = ironBean.getId();
         alert.setContentText("是否删除第" + id + "条数据?");
         Optional<ButtonType> type = alert.showAndWait();
         if (type.get().equals(ButtonType.OK)) {
             int i = LocalDbUtil.of().deleteIron(id);
+            if (i > 0) {
+                initDbData();
+            }
+        }
+    }
+
+    /**
+     * 删除技改等项目数据
+     */
+    @FXML
+    private void delete_special() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("删除确认");
+        ConsumeBean bean = tv_s.getSelectionModel().getSelectedItem();
+        if (bean == null) {
+            return;
+        }
+        int id = bean.getId();
+        alert.setContentText("是否删除第" + id + "条数据?");
+        Optional<ButtonType> type = alert.showAndWait();
+        if (type.get().equals(ButtonType.OK)) {
+            int i = LocalDbUtil.of().deleteSpecial(id);
             if (i > 0) {
                 initDbData();
             }

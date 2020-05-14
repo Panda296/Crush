@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox prefHeight="528.0" prefWidth="1178.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SecondController">
+<VBox prefHeight="713.0" prefWidth="1133.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SecondController">
    <children>
       <MenuBar>
         <menus>
@@ -26,9 +39,9 @@
           </Menu>
         </menus>
       </MenuBar>
-      <HBox prefHeight="503.0" prefWidth="1148.0">
+      <HBox prefHeight="677.0" prefWidth="1133.0">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="583.0" prefWidth="851.0" spacing="20.0">
+            <VBox alignment="TOP_CENTER" prefHeight="615.0" prefWidth="803.0" spacing="20.0">
                <children>
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="耗材消耗录入" textAlignment="CENTER">
                         <font>
@@ -106,6 +119,7 @@
                                       </Text>
                                       <TextField fx:id="count" promptText="消耗数量" text="0" />
                                       <Text fx:id="itemdetail" strokeType="OUTSIDE" strokeWidth="0.0" text="单价:" />
+                              <CheckBox fx:id="isSpecial" contentDisplay="RIGHT" mnemonicParsing="false" text="技改/固定资产/分摊项目" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" wrapText="true" />
                                       <Button fx:id="load" mnemonicParsing="false" onAction="#onLoad" prefWidth="120.0" text="保存">
                                           <font>
                                               <Font size="14.0" />
@@ -123,32 +137,50 @@
                         <Insets left="20.0" right="20.0" />
                      </VBox.margin>
                   </Separator>
-                  <HBox alignment="CENTER">
-                      <TableView fx:id="tableView" editable="true" onMouseClicked="#delete_consume" prefWidth="859.0">
-                          <columns>
-                           <TableColumn fx:id="col_id" minWidth="-1.0" prefWidth="40.0" text="id" />
-                              <TableColumn fx:id="date" minWidth="-1.0" prefWidth="106.0" text="时间" />
-                              <TableColumn fx:id="col_item" minWidth="-1.0" prefWidth="-1.0" text="耗材" />
-                              <TableColumn fx:id="count_1" minWidth="-1.0" prefWidth="-1.0" text="粗碎" />
-                              <TableColumn fx:id="count_2" minWidth="-1.0" prefWidth="-1.0" text="中碎" />
-                              <TableColumn fx:id="count_3" minWidth="-1.0" prefWidth="-1.0" text="细碎" />
-                              <TableColumn fx:id="count_4" minWidth="-1.0" prefWidth="-1.0" text="筛分" />
-                              <TableColumn fx:id="count_5" minWidth="-1.0" prefWidth="-1.0" text="干选" />
-                              <TableColumn fx:id="count_6" minWidth="-1.0" prefWidth="-1.0" text="皮带" />
-                              <TableColumn fx:id="count_7" minWidth="-1.0" prefWidth="-1.0" text="总消耗" />
-                          </columns>
-                          <columnResizePolicy>
-                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                          </columnResizePolicy>
-                      </TableView>
+                   <TableView fx:id="tableView" editable="true" onMouseClicked="#delete_consume" prefWidth="859.0">
+                       <columns>
+                        <TableColumn fx:id="col_id" minWidth="-1.0" prefWidth="40.0" text="id" />
+                           <TableColumn fx:id="date" minWidth="-1.0" prefWidth="106.0" text="时间" />
+                           <TableColumn fx:id="col_item" minWidth="-1.0" prefWidth="-1.0" text="耗材" />
+                           <TableColumn fx:id="count_1" minWidth="-1.0" prefWidth="-1.0" text="粗碎" />
+                           <TableColumn fx:id="count_2" minWidth="-1.0" prefWidth="-1.0" text="中碎" />
+                           <TableColumn fx:id="count_3" minWidth="-1.0" prefWidth="-1.0" text="细碎" />
+                           <TableColumn fx:id="count_4" minWidth="-1.0" prefWidth="-1.0" text="筛分" />
+                           <TableColumn fx:id="count_5" minWidth="-1.0" prefWidth="-1.0" text="干选" />
+                           <TableColumn fx:id="count_6" minWidth="-1.0" prefWidth="-1.0" text="皮带" />
+                           <TableColumn fx:id="count_7" minWidth="-1.0" prefWidth="-1.0" text="总消耗" />
+                       </columns>
+                       <columnResizePolicy>
+                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                       </columnResizePolicy>
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </VBox.margin>
+                   </TableView>
+                  <TableView fx:id="tv_s" onMouseClicked="#delete_special">
+                    <columns>
+                      <TableColumn fx:id="id_s" prefWidth="75.0" text="id" />
+                      <TableColumn fx:id="data_s" prefWidth="75.0" text="时间" />
+                        <TableColumn fx:id="item_s" prefWidth="75.0" text="耗材" />
+                        <TableColumn fx:id="count_1_s" prefWidth="75.0" text="粗碎" />
+                        <TableColumn fx:id="count_2_s" prefWidth="75.0" text="中碎" />
+                        <TableColumn fx:id="count_3_s" prefWidth="75.0" text="细碎" />
+                        <TableColumn fx:id="count_4_s" prefWidth="75.0" text="筛分" />
+                        <TableColumn fx:id="count_5_s" prefWidth="75.0" text="干选" />
+                        <TableColumn fx:id="count_6_s" prefWidth="75.0" text="皮带" />
+                        <TableColumn fx:id="total_s" prefWidth="75.0" text="总消耗" />
+                    </columns>
                      <VBox.margin>
                         <Insets bottom="20.0" left="20.0" right="20.0" />
                      </VBox.margin>
-                  </HBox>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
                </children>
             </VBox>
             <Separator orientation="VERTICAL" prefHeight="200.0" />
-            <VBox alignment="CENTER_LEFT" fillWidth="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="463.0" prefWidth="273.0" spacing="20.0">
+            <VBox alignment="CENTER_LEFT" fillWidth="false" minHeight="-Infinity" minWidth="-Infinity" prefHeight="463.0" prefWidth="284.0" spacing="20.0">
                <children>
                   <VBox spacing="15.0">
                      <children>
@@ -180,7 +212,7 @@
                         <Separator />
                         <HBox alignment="CENTER">
                            <children>
-                              <TableView fx:id="iron_table" onMouseClicked="#delete_iron">
+                              <TableView fx:id="iron_table" onMouseClicked="#delete_iron" prefHeight="446.0" prefWidth="284.0">
                                 <columns>
                                   <TableColumn fx:id="iron_id" minWidth="-1.0" prefWidth="70.0" text="id" />
                                     <TableColumn fx:id="iron_date" minWidth="-1.0" prefWidth="70.0" text="日期" />
