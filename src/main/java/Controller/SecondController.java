@@ -47,6 +47,7 @@ public class SecondController {
     private TableView<IronBean> iron_table;
     @FXML
     private CheckBox isSpecial;
+    private Double price;
 
 
     public void onTextChanged() {
@@ -64,7 +65,7 @@ public class SecondController {
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 JSONObject obj = ListsDetail.getJSONObject(newValue);
                 String s = obj.getString("存货单位");
-                Double price = obj.getDouble("结存单价");
+                price = obj.getDouble("结存单价");
                 DecimalFormat format = new DecimalFormat("#0.000");
                 format.format(price);
                 itemdetail.setText("单位: " + s + "  单价: " + format.format(price));
@@ -177,7 +178,7 @@ public class SecondController {
         if (wait.get().getButtonData().isDefaultButton()) {
             System.out.println("点击了确认");
             String insertdate = date + " " + time;
-            String sql = "insert into " + consume_data + " (data,item,count_1_1,count_1_2,count_2_1,count_2_2,totalcount,seleccount,beltcount) values(#" +
+            String sql = "insert into " + consume_data + " (data,item,count_1_1,count_1_2,count_2_1,count_2_2,totalcount,seleccount,beltcount,totalprice) values(#" +
                     insertdate + "#,'" +
                     item.getValue() + "'," +
                     count_1_1 + "," +
@@ -186,7 +187,9 @@ public class SecondController {
                     count_2_2 + "," +
                     item_count + "," +
                     selectcount + "," +
-                    beltcount + ")";
+                    beltcount + ","
+                    + item_count * price
+                    + ")";
 
             System.out.println("sql = " + sql);
 
