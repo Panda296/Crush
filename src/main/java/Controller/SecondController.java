@@ -48,6 +48,7 @@ public class SecondController {
     @FXML
     private CheckBox isSpecial;
     private Double price;
+    private String number;
 
 
     public void onTextChanged() {
@@ -66,6 +67,7 @@ public class SecondController {
                 JSONObject obj = ListsDetail.getJSONObject(newValue);
                 String s = obj.getString("存货单位");
                 price = obj.getDouble("结存单价");
+                number = obj.getString("number");
                 DecimalFormat format = new DecimalFormat("#0.000");
                 format.format(price);
                 itemdetail.setText("单位: " + s + "  单价: " + format.format(price));
@@ -90,6 +92,7 @@ public class SecondController {
                 JSONObject obj = new JSONObject();
                 obj.put("存货单位", query.getString("存货单位"));
                 obj.put("结存单价", query.getString("结存单价"));
+                obj.put("number", query.getString("存货编码"));
                 ListsDetail.put(query.getString("Items"), obj);
                 list.add(query.getString("Items"));
             }
@@ -178,7 +181,8 @@ public class SecondController {
         if (wait.get().getButtonData().isDefaultButton()) {
             System.out.println("点击了确认");
             String insertdate = date + " " + time;
-            String sql = "insert into " + consume_data + " (data,item,count_1_1,count_1_2,count_2_1,count_2_2,totalcount,seleccount,beltcount,totalprice) values(#" +
+            String sql = "insert into " + consume_data + " (data,item,count_1_1,count_1_2,count_2_1,count_2_2,totalcount," +
+                    "seleccount,beltcount,totalprice,numberid) values(#" +
                     insertdate + "#,'" +
                     item.getValue() + "'," +
                     count_1_1 + "," +
@@ -188,8 +192,8 @@ public class SecondController {
                     item_count + "," +
                     selectcount + "," +
                     beltcount + ","
-                    + item_count * price
-                    + ")";
+                    + item_count * price + ","
+                    + number + ")";
 
             System.out.println("sql = " + sql);
 
@@ -252,6 +256,7 @@ public class SecondController {
 
 
     private void cleanInput() {
+//        _1_1, _1_2, _2_1, _2_2, count, itemInput, ironInput, ironOut, belt, dryselect;
         _1_1.setText("0");
         _1_2.setText("0");
         _2_1.setText("0");
@@ -259,7 +264,8 @@ public class SecondController {
         count.setText("0");
         ironInput.setText("0");
         ironOut.setText("0");
-
+        belt.setText("0");
+        dryselect.setText("0");
     }
 
     /**
