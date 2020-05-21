@@ -182,7 +182,7 @@ public class SecondController {
             System.out.println("点击了确认");
             String insertdate = date + " " + time;
             String sql = "insert into " + consume_data + " (data,item,count_1_1,count_1_2,count_2_1,count_2_2,totalcount," +
-                    "seleccount,beltcount,totalprice,numberid) values(#" +
+                    "seleccount,beltcount,totalprice,numberid,price,price_1,price_2,price_3,price_4,price_5,price_6) values(#" +
                     insertdate + "#,'" +
                     item.getValue() + "'," +
                     count_1_1 + "," +
@@ -193,7 +193,15 @@ public class SecondController {
                     selectcount + "," +
                     beltcount + ","
                     + item_count * price + ","
-                    + number + ")";
+                    + "'" + number +"',"+
+                    price + "," +
+                    count_1_1 * price + "," +
+                    count_1_2 * price + "," +
+                    count_2_1 * price + "," +
+                    count_2_2 * price + "," +
+                    selectcount * price + "," +
+                    beltcount * price  +
+                    ")";
 
             System.out.println("sql = " + sql);
 
